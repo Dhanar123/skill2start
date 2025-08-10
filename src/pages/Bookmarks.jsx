@@ -55,7 +55,7 @@ const styles = {
     margin: "15px auto",
     maxWidth: "600px",
     textAlign: "left",
-    backgroundColor: "#FDEAA8", // pastel gold
+    backgroundColor: "#bdd6e7ff", 
     color: "#001F3F", // navy blue
   },
   category: {

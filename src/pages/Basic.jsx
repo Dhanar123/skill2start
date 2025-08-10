@@ -33,71 +33,91 @@ export default function Basic() {
     fetchDomains();
   }, []);
 
-  useEffect(() => {
-    const fetchContent = async () => {
-      if (!selectedDomain || !selectedDomain.id) return;
-      setLoadingItems(true);
-      try {
-        const subColRef = collection(
-          doc(db, "domains", selectedDomain.id),
-          activeTab
-        );
-        const snapshot = await getDocs(subColRef);
-        const data = snapshot.docs.map((doc) => doc.data());
-        setItems(data);
-      } catch (err) {
-        console.error("Error fetching items:", err);
-        setItems([]);
-      } finally {
-        setLoadingItems(false);
-      }
-    };
+useEffect(() => {
+  setLoadingItems(true); // show loading before fetch
 
-    fetchContent();
-  }, [selectedDomain, activeTab]);
-
-  const renderItems = () => {
-    if (loadingItems) {
-      return (
-        <div style={{ textAlign: "center" }}>
-          <div className="spinner"></div>
-          <p style={{ marginTop: "10px", color: "#FFA500", fontWeight: "bold" }}>
-            Loading content...
-          </p>
-        </div>
-      );
+  const fetchData = async () => {
+    try {
+      const snapshot = await getDocs(collection(db, "yourCollectionName"));
+      const fetchedItems = snapshot.docs.map(doc => doc.data());
+      setItems(fetchedItems);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoadingItems(false); // hide loading after fetch
     }
-
-    if (!items.length) return <p>No content available.</p>;
-
-    return (
-      <ul className="item-list">
-        {items.map((item, i) => {
-          const title = item.title?.trim();
-          const author = item.author?.trim();
-          const link = item.link?.trim();
-          const rating = item.rating;
-
-          return (
-            <li key={i} className="item-card">
-              {title && <strong>{title}</strong>}
-              {title && author && " — "}
-              {author && <span>{author}</span>}
-              <br />
-              {rating && <>⭐ {rating}</>}
-              <br />
-              {link && (
-                <a href={link} target="_blank" rel="noopener noreferrer">
-                  📎 Link
-                </a>
-              )}
-            </li>
-          );
-        })}
-      </ul>
-    );
   };
 
+  fetchData();
+}, []);
+
+const renderItems = () => {
+  if (loadingItems) {
+    return (
+      <div style={{ textAlign: "center", padding: "20px" }}>
+        <div
+          className="spinner"
+          style={{
+            margin: "auto",
+            border: "4px solid #f3f3f3ff",
+            borderTop: "4px solid #1e3a8a",
+            borderRadius: "50%",
+            width: "40px",
+            height: "40px",
+            animation: "spin 1s linear infinite",
+          }}
+        ></div>
+        <p
+  style={{
+    marginTop: "10px",
+    backgroundColor: "transparent",  // background removed
+    color: "#1e3a8a",
+    fontWeight: "bold"
+  }}
+>
+  Loading content...
+</p>
+      </div>
+    );
+  }
+
+  if (!items.length) {
+    return (
+      <p
+        style={{
+          backgroundColor: "#e0f2fe",
+          color: "#1e3a8a",
+          padding: "12px",
+          borderRadius: "8px",
+          textAlign: "center",
+          fontWeight: "500",
+        }}
+      >
+        Explore above  to learn about entrepreneurship!!
+      </p>
+    );
+  }
+
+  return (
+    <ul className="item-list">
+      {items.map((item, i) => (
+        <li key={i} className="item-card">
+          {item.title && <strong>{item.title}</strong>}
+          {item.title && item.author && " — "}
+          {item.author && <span>{item.author}</span>}
+          <br />
+          {item.rating && <>⭐ {item.rating}</>}
+          <br />
+          {item.link && (
+            <a href={item.link} target="_blank" rel="noopener noreferrer">
+              📎 Link
+            </a>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+};
   return (
     <div className="basic-wrapper">
       {/* LEVELS Button */}
@@ -152,28 +172,36 @@ export default function Basic() {
       </div>
 
       {/* Heading */}
-      <div className="heading-line">
-        <h3>Select a domain to view content</h3>
-      </div>
-
+      <div className="heading-line" style={{ backgroundColor: "#dbeafe" }}>
+  <h3>Select a domain to view content</h3>
+</div>
       {/* Domain Buttons */}
-      <div className="top-bar">
+      <div className="top-bar responsive-buttons">
         {loadingDomains ? (
           <div className="spinner" style={{ margin: "30px auto" }}></div>
         ) : (
-          domains.map((domain) => (
-            <button
-              key={domain.id}
-              onClick={() => {
-                setSelectedDomain(domain);
-                setActiveTab("books");
-              }}
-              className="skill-button"
-            >
-              {domain.name}
-            </button>
-          ))
-        )}
+         domains.map((domain) => (
+  <button
+    key={domain.id}
+    onClick={() => {
+      setSelectedDomain(domain);
+      setActiveTab("books");
+    }}
+    className="skill-button"
+    style={{
+      backgroundColor:
+        selectedDomain?.id === domain.id ? "#dbeafe" : "white", // Selected -> light blue
+      color: "rgb(30,58,138)",
+      border: "2px solid rgb(30,58,138)",
+      padding: "8px 14px",
+      borderRadius: "6px",
+      fontWeight: "bold",
+      cursor: "pointer",
+    }}
+  >
+    {domain.name}
+  </button>
+)))}
       </div>
 
       {/* Main Content */}
@@ -184,21 +212,28 @@ export default function Basic() {
 
             {/* Tab Buttons */}
             <div className="tab-buttons-wrapper">
-              <div className="tab-buttons">
+              <div className="tab-buttons scroll-tabs">
                 {["books", "videos", "courses", "blogs"].map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`tab-button ${
-                      activeTab === tab ? "active-tab" : ""
-                    }`}
-                  >
-                    {tab === "books" && "📚 Books"}
-                    {tab === "videos" && "🎥 Videos"}
-                    {tab === "courses" && "💻 Courses"}
-                    {tab === "blogs" && "📝 Blogs"}
-                  </button>
-                ))}
+  <button
+    key={tab}
+    onClick={() => setActiveTab(tab)}
+    className="tab-button"
+    style={{
+      backgroundColor: activeTab === tab ? "#dbeafe" : "white",  // selected tab light blue
+      color: "rgb(30,58,138)",
+      border: "2px solid rgb(30,58,138)",
+      padding: "8px 14px",
+      borderRadius: "6px",
+      fontWeight: "bold",
+      cursor: "pointer",
+    }}
+  >
+    {tab === "books" && "📚 Books"}
+    {tab === "videos" && "🎥 Videos"}
+    {tab === "courses" && "💻 Courses"}
+    {tab === "blogs" && "📝 Blogs"}
+  </button>
+))}
               </div>
             </div>
           </>
@@ -220,7 +255,8 @@ const fixedTopRight = {
 };
 
 const levelsButtonStyle = {
-  backgroundColor: "#FFA500",
+  
+  backgroundColor: "#1e3a8a",
   color: "white",
   padding: "10px 14px",
   border: "none",
@@ -228,19 +264,20 @@ const levelsButtonStyle = {
   fontSize: "16px",
   cursor: "pointer",
 };
-
 const levelsDropdownStyle = {
   position: "absolute",
   top: "42px",
   right: "0",
   backgroundColor: "white",
-  border: "1px solid #FFA500",
+  backgroundColor: "rgba(253, 253, 255, 1)",
+  border: "1px solid ",
   borderRadius: "6px",
   boxShadow: "0 0 10px rgba(0,0,0,0.1)",
   zIndex: 1000,
   display: "flex",
   flexDirection: "column",
   padding: "10px",
+  minWidth: "140px",
 };
 
 const dropdownItemStyle = {

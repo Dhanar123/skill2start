@@ -6,6 +6,10 @@ import { doc, setDoc } from "firebase/firestore";
 
 export default function Home() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [userMessage, setUserMessage] = useState("");
+
   const navigate = useNavigate();
 
   const [name, setName] = useState(localStorage.getItem("username") || "");
@@ -29,54 +33,101 @@ export default function Home() {
       alert("Please enter both name and email.");
     }
   };
-return (
-  <div className="basic-wrapper">
-    {/* Top-right LEVELS button */}
-    <div style={fixedTopRight}>
-      <button
-        style={levelsButtonStyle}
-        onClick={() => setDropdownOpen(!dropdownOpen)}
-      >
-        ☰ LEVELS
-      </button>
-      {dropdownOpen && (
-        <div style={levelsDropdownStyle}>
-          <div
-            style={dropdownItemStyle}
-            onClick={() => {
-              navigate("/basic");
-              setDropdownOpen(false);
-            }}
-          >
-            🟡 Basic
-          </div>
-          <div
-            style={dropdownItemStyle}
-            onClick={() => {
-              navigate("/intermediate");
-              setDropdownOpen(false);
-            }}
-          >
-            🔵 Intermediate
-          </div>
-          <div
-            style={dropdownItemStyle}
-            onClick={() => {
-              navigate("/advanced");
-              setDropdownOpen(false);
-            }}
-          >
-            🔴 Advanced
-          </div>
-        </div>
-      )}
-    </div>
 
-    {/* Center Block */}
-    <div style={centerBoxWrapper}>
-      {/* 🔼 Create Profile - Now at the Top */}
-      <div style={{ marginBottom: "30px" }}>
-        <h3 style={{ color: "#003366", marginBottom: "10px" }}>
+  const sendChatMessage = async () => {
+    if (!userMessage.trim()) return;
+
+    // Add user message to chat
+    const updatedMessages = [...chatMessages, { sender: "user", text: userMessage }];
+    setChatMessages(updatedMessages);
+
+    setUserMessage("");
+
+    // Add a temporary "Thinking..." message
+    setChatMessages((prev) => [...prev, { sender: "bot", text: "Thinking..." }]);
+
+    try {
+      const response = await fetch("http://localhost:5050/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMessage }),
+      });
+
+      const data = await response.json();
+
+      // Replace "Thinking..." with the actual bot reply
+      setChatMessages((prev) => {
+        const msgs = prev.slice(0, -1); // Remove last "Thinking..."
+        msgs.push({ sender: "bot", text: data.reply || "Sorry, no response." });
+        return msgs;
+      });
+    } catch (error) {
+      // Replace "Thinking..." with error message
+      setChatMessages((prev) => {
+        const msgs = prev.slice(0, -1);
+        msgs.push({ sender: "bot", text: "Error: Unable to get response." });
+        return msgs;
+      });
+      console.error("Chatbot API error:", error);
+    }
+  };
+
+  return (
+    <div className="basic-wrapper">
+      {/* Top-right LEVELS button */}
+      <div style={fixedTopRight}>
+        <button
+          style={levelsButtonStyle}
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+        >
+          ☰ LEVELS
+        </button>
+        {dropdownOpen && (
+          <div style={levelsDropdownStyle}>
+            <div
+              style={dropdownItemStyle}
+              onClick={() => {
+                navigate("/basic");
+                setDropdownOpen(false);
+              }}
+            >
+              🟡 Basic
+            </div>
+            <div
+              style={dropdownItemStyle}
+              onClick={() => {
+                navigate("/intermediate");
+                setDropdownOpen(false);
+              }}
+            >
+              🔵 Intermediate
+            </div>
+            <div
+              style={dropdownItemStyle}
+              onClick={() => {
+                navigate("/advanced");
+                setDropdownOpen(false);
+              }}
+            >
+              🔴 Advanced
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Profile creation */}
+      <div
+        style={{
+          marginBottom: "30px",
+          padding: "20px",
+          borderRadius: "10px",
+          backgroundColor: "transparent",
+          boxShadow: "none",
+          maxWidth: "400px",
+          margin: "0 auto",
+        }}
+      >
+        <h3 style={{ color: "#1e3a8a", marginBottom: "15px", textAlign: "center" }}>
           👤 Create Profile
         </h3>
         <input
@@ -84,22 +135,30 @@ return (
           placeholder="Enter your Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          style={inputStyle}
+          style={{
+            ...inputStyle,
+            marginBottom: "12px",
+          }}
         />
         <input
           type="email"
           placeholder="Enter your Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={inputStyle}
+          style={{
+            ...inputStyle,
+            marginBottom: "12px",
+          }}
         />
         <button onClick={handleLogin} style={saveBtnStyle}>
           Save
         </button>
       </div>
 
-      {/* 🔽 Welcome and Navigation */}
-      <h2>🚀 Welcome to Skill2Start</h2>
+      {/* Welcome and Navigation */}
+      <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
+        🚀 Welcome to Skill2Start
+      </h2>
       <div style={menuOptionsStyle}>
         <button onClick={() => navigate("/newpost")} style={homeBtnStyle}>
           📝 New Post
@@ -117,11 +176,61 @@ return (
           🤝 Community
         </button>
       </div>
+
+      {/* Floating Chatbot */}
+      <div style={chatbotWrapper}>
+        {chatOpen && (
+          <div style={chatWindow}>
+            <div style={chatHeader}>💬 Entrepreneurship Assistant</div>
+            <div style={chatBody}>
+              {chatMessages.map((msg, i) => (
+                <div
+                  key={i}
+                  style={{
+                    textAlign: msg.sender === "user" ? "right" : "left",
+                    margin: "5px 0",
+                  }}
+                >
+                  <span
+                    style={{
+                      display: "inline-block",
+                      backgroundColor: msg.sender === "user" ? "#1e3a8a" : "#e0f2fe",
+                      color: msg.sender === "user" ? "white" : "#1e3a8a",
+                      padding: "6px 10px",
+                      borderRadius: "8px",
+                      maxWidth: "80%",
+                    }}
+                  >
+                    {msg.text}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div style={chatInputWrapper}>
+              <input
+                type="text"
+                value={userMessage}
+                onChange={(e) => setUserMessage(e.target.value)}
+                placeholder="Ask about entrepreneurship..."
+                style={chatInput}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") sendChatMessage();
+                }}
+              />
+              <button onClick={sendChatMessage} style={chatSendBtn}>Send</button>
+            </div>
+          </div>
+        )}
+
+        <button style={chatToggleBtn} onClick={() => setChatOpen(!chatOpen)}>
+          💬
+        </button>
+      </div>
     </div>
-  </div>
-);
+  );
 }
-// === Inline Styles ===
+
+// === Styles ===
 const fixedTopRight = {
   position: "fixed",
   top: "16px",
@@ -130,7 +239,7 @@ const fixedTopRight = {
 };
 
 const levelsButtonStyle = {
-  backgroundColor: "#FFA500",
+  backgroundColor: "#1e3a8a",
   color: "white",
   padding: "10px 14px",
   border: "none",
@@ -144,7 +253,7 @@ const levelsDropdownStyle = {
   top: "42px",
   right: "0",
   backgroundColor: "white",
-  border: "1px solid #FFA500",
+  border: "1px solid #1e3a8a",
   borderRadius: "6px",
   boxShadow: "0 0 10px rgba(0,0,0,0.1)",
   zIndex: 1000,
@@ -154,19 +263,9 @@ const levelsDropdownStyle = {
 const dropdownItemStyle = {
   padding: "10px 14px",
   borderBottom: "1px solid #eee",
-  color: "#FFA500",
+  color: "#1e3a8a",
   cursor: "pointer",
   fontSize: "14px",
-};
-
-const centerBoxWrapper = {
-  maxWidth: "500px",
-  margin: "60px auto 0",
-  padding: "30px",
-  backgroundColor: "#fff4cc",
-  borderRadius: "10px",
-  textAlign: "center",
-  boxShadow: "0 0 8px rgba(0,0,0,0.05)",
 };
 
 const menuOptionsStyle = {
@@ -178,8 +277,8 @@ const menuOptionsStyle = {
 
 const homeBtnStyle = {
   backgroundColor: "white",
-  border: "1px solid #FFA500",
-  color: "#FFA500",
+  border: "1px solid #1e3a8a",
+  color: "#1e3a8a",
   padding: "10px",
   borderRadius: "6px",
   cursor: "pointer",
@@ -196,11 +295,81 @@ const inputStyle = {
 };
 
 const saveBtnStyle = {
-  backgroundColor: "#003366",
+  backgroundColor: "#1e3a8a",
   color: "white",
   padding: "10px 20px",
   border: "none",
   borderRadius: "6px",
   marginTop: "10px",
+  cursor: "pointer",
+};
+
+// === Chatbot Styles ===
+const chatbotWrapper = {
+  position: "fixed",
+  bottom: "20px",
+  right: "20px",
+  zIndex: 999,
+};
+
+const chatToggleBtn = {
+  backgroundColor: "#1e3a8a",
+  color: "white",
+  border: "none",
+  borderRadius: "50%",
+  width: "50px",
+  height: "50px",
+  fontSize: "22px",
+  cursor: "pointer",
+  boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+};
+
+const chatWindow = {
+  position: "fixed",
+  bottom: "80px",
+  right: "20px",
+  width: "300px",
+  height: "400px",
+  backgroundColor: "white",
+  border: "1px solid #ccc",
+  borderRadius: "10px",
+  display: "flex",
+  flexDirection: "column",
+  boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
+};
+
+const chatHeader = {
+  backgroundColor: "#1e3a8a",
+  color: "white",
+  padding: "10px",
+  borderTopLeftRadius: "10px",
+  borderTopRightRadius: "10px",
+  fontWeight: "bold",
+};
+
+const chatBody = {
+  flex: 1,
+  padding: "10px",
+  overflowY: "auto",
+  fontSize: "14px",
+};
+
+const chatInputWrapper = {
+  display: "flex",
+  borderTop: "1px solid #ccc",
+};
+
+const chatInput = {
+  flex: 1,
+  border: "none",
+  padding: "8px",
+  outline: "none",
+};
+
+const chatSendBtn = {
+  backgroundColor: "#1e3a8a",
+  color: "white",
+  border: "none",
+  padding: "8px 12px",
   cursor: "pointer",
 };

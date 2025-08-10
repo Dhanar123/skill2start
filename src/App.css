@@ -1,69 +1,70 @@
-/* === Global Reset & Defaults === */
-body {
+/* === GLOBAL RESET & BASE === */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+body {
   font-family: sans-serif;
-  background-color: #ffffff;
-  color: #FFA500;
+  background: linear-gradient(to bottom right, #eaf6ff, #dbeafe, #bfdbfe);
+  color: #1e3a8a;
+  line-height: 1.6;
 }
 
-/* === Heading Line === */
+/* === HEADING LINE === */
 .heading-line {
+  background-color: #dbeafe; /* new light blue */
+  padding: 10px;
   text-align: center;
-  font-size: 18px;
-  padding: 16px;
-  border-bottom: 2px solid #FFA500;
-  font-weight: bold;
-  background-color: #ffffff;
+  border-radius: 6px;
 }
 
-/* === Skills Top Bar - Responsive (No Horizontal Scroll) === */
+/* === TOP BAR === */
 .top-bar {
   display: flex;
-  flex-wrap: wrap; /* let items wrap instead of scroll */
+  flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
   padding: 12px 16px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #FFA500;
+  background-color: #fff;
+  border-bottom: 1px solid #60a5fa;
 }
 
-/* === Skill Buttons === */
+/* === BUTTONS === */
 .skill-button {
-  padding: 10px 14px;
-  background-color: #ffffff;
-  border: 1px solid #FFA500;
-  color: #FFA500;
-  border-radius: 6px;
-  font-size: 15px;
+  background-color: white !important;           /* White background */
+  color: rgb(30, 58, 138) !important;              /* Text color */
+  border: 2px solid rgb(30, 58, 138)   !important;  /* Border color */
+  padding: 8px 14px !important;
+  border-radius: 6px !important;
+  font-weight: bold !important;
   cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
 }
 
 .skill-button:hover {
-  background-color: #fff5e1;
+  background-color: rgb(30, 58, 138);    /* Hover effect */
+  color: white;                          /* Text turns white */
+}
+.tab-button.active-tab {
+  background-color: oklab(100% 0 -0.00011);
+  color: #fff;
 }
 
-/* === Content Section === */
+/* === CONTENT WRAPPERS === */
 .basic-content {
   padding: 20px;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: auto;
 }
-
-/* === Tab Buttons Wrapper (NEW) === */
 .tab-buttons-wrapper {
-  background-color: #fff3cd; /* light yellow or your desired background */
+  background-color: #fff;
   padding: 20px;
   border-radius: 10px;
   margin: 16px auto;
   width: 95%;
   max-width: 1000px;
-  box-sizing: border-box;
+  border: 1px solid #e0e7ff;
 }
-
-/* === Tab Buttons === */
 .tab-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -71,331 +72,128 @@ body {
   justify-content: center;
 }
 
-/* === Individual Button === */
-.tab-button {
-  padding: 10px 16px;
-  border: 1px solid #FFA500;
-  border-radius: 6px;
-  font-size: 14px;
-  background-color: #ffffff;
-  color: #FFA500;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-  flex-shrink: 0;
-}
-
-/* === Active Tab === */
-.tab-button.active-tab {
-  background-color: #FFA500;
-  color: white;
-}
-
-/* === Content Box === */
-.content-box {
-  margin: 16px auto;
-  padding: 16px;
-  width: 90%;
-  background-color: #fff3cd;
-  border-radius: 10px;
-  box-sizing: border-box;
-  text-align: center;
-}
-
-/* === Item List === */
+/* === CARDS & LISTS === */
 .item-list {
-  list-style-type: none;
-  padding: 0;
-  color: #333;
+  list-style: none;
 }
-
 .item-card {
   margin-bottom: 15px;
   padding: 12px;
   background: #fff;
-  border-left: 5px solid #FFA500;
+  border-left: 5px solid #3b82f6;
   border-radius: 6px;
-}
-
-/* === Responsive Adjustments === */
-@media (max-width: 768px) {
-  .heading-line {
-    font-size: 16px;
-    padding: 12px;
-  }
-
-  .skill-button {
-    font-size: 14px;
-    padding: 8px 12px;
-  }
-
-  .tab-button {
-    font-size: 13px;
-    padding: 8px 10px;
-  }
-
-  .basic-content {
-    padding: 16px;
-  }
-
-  .item-card {
-    font-size: 14px;
-  }
-}
-/* === Intermediate Page Reuse === */
-.intro-text {
-  font-size: 18px;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.box-info {
-  background-color: #fff4cc;
-  padding: 20px;
-  border-radius: 10px;
-  display: inline-block;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-width: 100%;
-  margin: auto;
-  text-align: center;
-}
-
-.info-label {
-  font-size: 18px;
-  font-weight: bold;
-  color: #003366;
-  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 .card-grid {
   display: grid;
-  grid-template-columns: 1fr; /* Default: one column (mobile-first) */
   gap: 20px;
   padding: 20px;
   margin: 0 auto;
   width: 100%;
-  max-width: 1200px;
-  box-sizing: border-box;
 }
-
-/* Responsive: More columns on larger screens */
 @media (min-width: 600px) {
   .card-grid {
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   }
 }
-
 .card-style {
-  border: 1px solid #ccc;
+  border: 1px solid #dbeafe;
   border-radius: 10px;
   padding: 15px;
-  background-color: #ffffff;
-  color: #003366;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(30, 58, 138, 0.08);
 }
 
-.apply-button {
-  padding: 8px 14px;
-  border: none;
-  color: white;
-  border-radius: 4px;
-  margin-top: 10px;
+/* === CREATE COMMUNITY SECTION === */
+.create-community {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+  align-items: center;
 }
-
-.apply-fund-button {
-  display: inline-block;
-  padding: 8px 14px;
-  background-color: #28a745;
-  color: white;
-  text-decoration: none;
-  border-radius: 4px;
-  margin-top: 10px;
+.create-community-text {
+  color: #1e3a8a;
 }
-
-.intro-heading {
+.create-community h2 {
   font-size: 26px;
-  color: #003366;
   margin-bottom: 10px;
 }
-
-.intro-text {
-  line-height: 1.6;
-  font-weight: 500;
-  color: #333;
+.create-community p {
+  font-size: 16px;
 }
-
-.section-heading {
-  font-size: 22px;
-  margin-bottom: 15px;
-  color: #003366;
+.create-community-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
 }
-.centered {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
-  text-align: center;
-}
-
-.center-box {
-  max-width: 500px;
-  background: #fff4cc;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-}
-
-.home-options {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.home-option {
-  background: white;
-  padding: 12px;
-  border: 1px solid #FFA500;
-  border-radius: 6px;
-  cursor: pointer;
-  color: #FFA500;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-
-.home-option:hover {
-  background-color: #fff1d6;
-}
-
-/* Levels Dropdown */
-.levels-dropdown-trigger {
-  position: relative;
-  display: inline-block;
-  float: right;
-  margin-right: 16px;
-}
-
-.levels-dropdown {
-  display: none;
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: white;
-  border: 1px solid #FFA500;
-  border-radius: 6px;
-  z-index: 10;
-  min-width: 160px;
-}
-
-.levels-dropdown a {
-  padding: 10px;
-  display: block;
-  color: #FFA500;
-  text-decoration: none;
-  border-bottom: 1px solid #eee;
-}
-
-.levels-dropdown a:hover {
-  background-color: #fff5e1;
-}
-
-.levels-dropdown-trigger:hover .levels-dropdown {
-  display: block;
-}
-.basic-wrapper {
-  min-height: 100vh;
-  background-color: #ffffff;
-  font-family: sans-serif;
-}
-
-/* Top-right bar */
-.top-nav {
-  display: flex;
-  justify-content: flex-end;
-  padding: 16px;
-}
-
-.levels-button {
-  background-color: #FFA500;
+.create-community button {
+  padding: 10px 16px;
+  background-color: #1e3a8a;
   color: white;
-  padding: 10px 14px;
   border: none;
   border-radius: 6px;
   font-size: 16px;
   cursor: pointer;
+  margin-top: 15px;
+}
+.create-community button:hover {
+  background-color: #2563eb;
 }
 
-/* Dropdown */
-.levels-dropdown {
-  position: absolute;
-  right: 0;
-  top: 40px;
-  background-color: white;
-  border: 1px solid #FFA500;
-  border-radius: 6px;
-  z-index: 1000;
-  min-width: 150px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+/* === RESPONSIVE BREAKPOINTS === */
+@media (max-width: 900px) {
+  .create-community {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .create-community button {
+    width: 100%;
+  }
 }
-
-.levels-dropdown a {
-  display: block;
-  padding: 10px 14px;
-  color: #FFA500;
-  text-decoration: none;
-  border-bottom: 1px solid #eee;
-  cursor: pointer;
+@media (max-width: 768px) {
+  .heading-line {
+    font-size: 16px;
+    padding: 12px;
+  }
+  .skill-button,
+  .tab-button {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+  .basic-content {
+    padding: 16px;
+  }
+  .item-card {
+    font-size: 14px;
+  }
 }
-
-.levels-dropdown a:hover {
-  background-color: #fff6e5;
-}
-
-.levels-dropdown a:last-child {
-  border-bottom: none;
-}
-
-/* Centered Content */
-.center-box {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 30px;
-  background-color: #fff4cc;
-  border-radius: 10px;
-  text-align: center;
-  margin-top: 60px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
-}
-body {
-  background: linear-gradient(to bottom right, #fff4cc, #ffd699, #ffe6b3);
-}
-.spinner {
-  border: 6px solid #f3f3f3;
-  border-top: 6px solid #FFA500;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: spin 1s linear infinite;
-  margin: auto;
-  margin-top: 100px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-/* Orange themed spinner */
-.spinner {
-  border: 6px solid #f3f3f3;
-  border-top: 6px solid #FFA500; /* orange */
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: spin 1s linear infinite;
-  margin: auto;
-  margin-top: 100px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+@media (max-width: 600px) {
+  h2, h3 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .skill-button {
+    flex: 1 1 calc(50% - 10px);
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+  .tab-button {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+  }
+  .item-card {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+  .tab-buttons {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 4px;
+  }
+  .tab-buttons::-webkit-scrollbar {
+    display: none;
+  }
 }

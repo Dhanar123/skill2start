@@ -1,20 +1,12 @@
-import dotenv from "dotenv";
-dotenv.config(); // Load .env variables
-
-import express from "express";
+import express from 'express';
 
 const app = express();
-const port = 3000;
+const PORT = 5050;
 
-// ✅ Middleware to parse JSON
-app.use(express.json());
-
-// ✅ Root route
-app.get("/", (req, res) => {
-  res.send("✅ Skill2Start API Server is running without chatbot!");
+app.get('/', (req, res) => {
+  res.send('Hello from backend!');
 });
 
-// ✅ Start the server
-app.listen(port, () => {
-  console.log(`🚀 Server running at http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });

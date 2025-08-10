@@ -86,16 +86,23 @@ export default function Advanced() {
 
   const renderContent = () => {
     if (!selectedOption) {
-      return (
-        <div className="content-box">
-          <h2 className="intro-heading">🚀 Advanced Section</h2>
-          <p className="intro-text">
-            Access private & government funding 💰, explore verified entrepreneurs 👤,
-            apply for internships 🤝, and stay updated with startup insights 📢 — all in one place!
-          </p>
-        </div>
-      );
-    }
+  return (
+    <div
+      className="content-box"
+      style={{
+        backgroundColor: "#dbeafe",
+        padding: "20px",
+        borderRadius: "8px"
+      }}
+    >
+      <h2 className="intro-heading">🚀 Advanced Section</h2>
+      <p className="intro-text">
+        Access private & government funding 💰, explore verified entrepreneurs 👤,
+        apply for internships 🤝, and stay updated with startup insights 📢 — all in one place!
+      </p>
+    </div>
+  );
+}
 
     switch (selectedOption) {
       case "entrepreneur":
@@ -116,7 +123,7 @@ export default function Advanced() {
                       <button
                         className="apply-button"
                         style={{
-                          backgroundColor: appliedCount >= 5 ? "#ff9900" : "#003366",
+                          backgroundColor: appliedCount >= 5 ? "#1e3a8a" : "#003366",
                           cursor: appliedCount >= 5 ? "not-allowed" : "pointer",
                         }}
                         disabled={appliedCount >= 5}
@@ -147,13 +154,32 @@ export default function Advanced() {
                     <p>{fund.description}</p>
                     {fund.applyLink && fund.applyLink.startsWith("http") ? (
                       <a
-                        href={fund.applyLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="apply-fund-button"
-                      >
-                        Apply Now
-                      </a>
+  href={fund.applyLink}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="apply-fund-button"
+  style={{
+    display: "inline-block",
+    padding: "10px 18px",
+    background: "linear-gradient(135deg, #1e3a8a, #3b82f6)",
+    color: "white",
+    fontWeight: "bold",
+    borderRadius: "8px",
+    textDecoration: "none",
+    transition: "all 0.3s ease",
+    boxShadow: "0 4px 8px rgba(0,0,0,0.15)",
+  }}
+  onMouseEnter={(e) => {
+    e.target.style.transform = "scale(1.05)";
+    e.target.style.boxShadow = "0 6px 12px rgba(0,0,0,0.25)";
+  }}
+  onMouseLeave={(e) => {
+    e.target.style.transform = "scale(1)";
+    e.target.style.boxShadow = "0 4px 8px rgba(0,0,0,0.15)";
+  }}
+>
+   Apply Now
+</a>
                     ) : (
                       <p style={{ color: "red", fontWeight: "bold" }}>
                         🔗 Application link not available
@@ -247,7 +273,7 @@ const fixedTopRight = {
 };
 
 const levelsButtonStyle = {
-  backgroundColor: "#FFA500",
+  backgroundColor: "#1e3a8a",
   color: "white",
   padding: "10px 14px",
   border: "none",
@@ -261,7 +287,7 @@ const levelsDropdownStyle = {
   top: "42px",
   right: "0",
   backgroundColor: "white",
-  border: "1px solid #FFA500",
+  border: "1px solid #1e3a8a",
   borderRadius: "6px",
   boxShadow: "0 0 10px rgba(0,0,0,0.1)",
   zIndex: 1000,

@@ -95,7 +95,7 @@ const styles = {
     margin: "15px auto",
     maxWidth: "600px",
     textAlign: "left",
-    backgroundColor: "#FDEAA8", // Pastel gold
+    backgroundColor: "#cee7f8ff", // Pastel gold
     color: "#001F3F", // Navy blue
     cursor: "pointer",
   },

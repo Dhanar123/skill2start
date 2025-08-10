@@ -19,7 +19,7 @@ export default function Intermediate() {
     return (  
       <div style={{ textAlign: "center" }}>  
         <div className="spinner"></div>  
-        <p style={{ marginTop: "10px", color: "#FFA500", fontWeight: "bold" }}>  
+        <p style={{ marginTop: "10px", color: "#1e3a8a", fontWeight: "bold" }}>  
           Loading Intermediate Content...  
         </p>  
       </div>  
@@ -99,7 +99,7 @@ const fixedTopRight = {
 };  
   
 const levelsButtonStyle = {  
-  backgroundColor: "#FFA500",  
+  backgroundColor: "#1e3a8a",  
   color: "white",  
   padding: "10px 14px",  
   border: "none",  
@@ -115,7 +115,7 @@ const levelsDropdownStyle = {
   top: "42px",
   right: "0",
   backgroundColor: "white",
-  border: "1px solid #FFA500",
+  border: "1px solid #1e3a8a",
   borderRadius: "6px",
   boxShadow: "0 0 10px rgba(0,0,0,0.1)",
   zIndex: 1000,

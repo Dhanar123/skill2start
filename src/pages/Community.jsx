@@ -62,41 +62,45 @@ export default function Community() {
 
   return (
     <div style={styles.container}>
-      <h2>👥 Create Community</h2>
-      <input
-        placeholder="Community Name"
-        value={communityName}
-        onChange={(e) => setCommunityName(e.target.value)}
-        style={styles.input}
-      />
-      <textarea
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        style={{ ...styles.input, height: "60px" }}
-      />
-      <button onClick={handleCreate} style={styles.button}>Create</button>
+      <h2 style={styles.heading}>👥 Create Community</h2>
+      <div style={styles.form}>
+        <input
+          placeholder="Community Name"
+          value={communityName}
+          onChange={(e) => setCommunityName(e.target.value)}
+          style={styles.input}
+        />
+        <textarea
+          placeholder="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          style={{ ...styles.input, height: "60px", resize: "none" }}
+        />
+        <button onClick={handleCreate} style={styles.button}>Create</button>
+      </div>
 
-      <h3 style={{ marginTop: "30px" }}>Your Communities</h3>
+      <h3 style={styles.subheading}>Your Communities</h3>
       {communities.length === 0 ? (
-        <p>No communities created yet.</p>
+        <p style={styles.empty}>No communities created yet.</p>
       ) : (
-        communities.map((com) => (
-          <div key={com.id} style={styles.card}>
-            <strong>{com.name}</strong>
-            <p>{com.description}</p>
+        <div style={styles.cardsContainer}>
+          {communities.map((com) => (
+            <div key={com.id} style={styles.card}>
+              <h4 style={styles.cardTitle}>{com.name}</h4>
+              <p style={styles.cardDescription}>{com.description}</p>
 
-            <input
-              placeholder="Member email"
-              value={memberEmail}
-              onChange={(e) => setMemberEmail(e.target.value)}
-              style={styles.input}
-            />
-            <button onClick={() => handleAddMember(com.id)} style={styles.button}>
-              Add Member
-            </button>
-          </div>
-        ))
+              <input
+                placeholder="Member email"
+                value={memberEmail}
+                onChange={(e) => setMemberEmail(e.target.value)}
+                style={styles.input}
+              />
+              <button onClick={() => handleAddMember(com.id)} style={styles.button}>
+                Add Member
+              </button>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
@@ -104,28 +108,80 @@ export default function Community() {
 
 const styles = {
   container: {
-    padding: "40px",
+    padding: "20px",
+    maxWidth: "1200px",
+    margin: "auto",
+  },
+  heading: {
     textAlign: "center",
+    color: "#003366",
+    marginBottom: "20px",
+  },
+  subheading: {
+    marginTop: "30px",
+    color: "#003366",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "10px",
+    background: "#ffffff",
+    padding: "20px",
+    borderRadius: "15px",
+    boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+    maxWidth: "500px",
+    margin: "auto",
   },
   input: {
-    padding: "10px",
-    margin: "10px",
-    width: "300px",
+    padding: "12px",
+    width: "100%",
+    maxWidth: "400px",
     fontSize: "16px",
+    borderRadius: "8px",
+    border: "1px solid #ccc",
+    outline: "none",
+    transition: "0.3s",
   },
   button: {
-    padding: "10px 20px",
+    padding: "12px 20px",
     backgroundColor: "#003366",
     color: "white",
     border: "none",
+    borderRadius: "8px",
     cursor: "pointer",
+    fontSize: "16px",
+    transition: "background 0.3s",
+  },
+  buttonHover: {
+    backgroundColor: "#0055aa",
+  },
+  cardsContainer: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+    gap: "20px",
+    marginTop: "20px",
   },
   card: {
-    border: "1px solid #ccc",
-    borderRadius: "10px",
+    background: "#ffffff",
     padding: "20px",
-    margin: "15px auto",
-    maxWidth: "500px",
-    backgroundColor: "#f9f9f9",
+    borderRadius: "15px",
+    boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+    transition: "transform 0.2s ease, box-shadow 0.2s ease",
+  },
+  cardTitle: {
+    fontSize: "18px",
+    fontWeight: "bold",
+    marginBottom: "8px",
+    color: "#003366",
+  },
+  cardDescription: {
+    fontSize: "14px",
+    color: "#555",
+    marginBottom: "10px",
+  },
+  empty: {
+    marginTop: "10px",
+    color: "#888",
   },
 };
