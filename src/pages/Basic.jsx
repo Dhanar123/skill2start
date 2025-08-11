@@ -59,7 +59,7 @@ const renderItems = () => {
           className="spinner"
           style={{
             margin: "auto",
-            border: "4px solid #f3f3f3ff",
+            border: "4px solid #ffffffff",
             borderTop: "4px solid #1e3a8a",
             borderRadius: "50%",
             width: "40px",
@@ -268,9 +268,8 @@ const levelsDropdownStyle = {
   position: "absolute",
   top: "42px",
   right: "0",
-  backgroundColor: "white",
-  backgroundColor: "rgba(253, 253, 255, 1)",
-  border: "1px solid ",
+  backgroundColor: "rgba(253, 253, 255, 1)", // keep only one
+  border: "1px solid",
   borderRadius: "6px",
   boxShadow: "0 0 10px rgba(0,0,0,0.1)",
   zIndex: 1000,
@@ -279,6 +278,7 @@ const levelsDropdownStyle = {
   padding: "10px",
   minWidth: "140px",
 };
+
 
 const dropdownItemStyle = {
   padding: "6px 12px",

@@ -47,7 +47,7 @@ export default function Home() {
     setChatMessages((prev) => [...prev, { sender: "bot", text: "Thinking..." }]);
 
     try {
-      const response = await fetch("http://localhost:5050/chat", {
+      const response = await fetch("https://skill2start-backend-2.onrender.com", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMessage }),
